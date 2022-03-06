@@ -1,0 +1,6 @@
+# .NET Core build folders
+bin/
+obj/
+*/TestResults/
+ArgSharp.Tests/tools
+*/.vscode/
