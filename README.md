@@ -22,13 +22,13 @@ Add attributes to define command-line usage:
 ```cs
 public class CMDLineArgs{
 
-    [NamedArgument('l', "log_level", help: "Logging level: 0 ERROR, 1 WARN, 2 INFO"]
+    [NamedArgument('l', "log_level", helpText: "Logging level: 0 ERROR, 1 WARN, 2 INFO"]
     public int LogLevel {get;set;}
 
-    [PositionalArgument("Input File", help: "File to compress")]
+    [PositionalArgument("Input File", helpText: "File to compress")]
     public string InFile {get;set;}
 
-    [PositionalArgument("Ouput File", help: "Output archive file")]
+    [PositionalArgument("Ouput File", helpText: "Output archive file")]
     public string OutFile {get;set;}
 }
 ```
@@ -58,7 +58,7 @@ Usage:
 
 Example:
 ```cs
-[NamedArgument('c', "compression", required: true, help: "Compression level"]
+[NamedArgument('c', "compression", required: true, helpText: "Compression level"]
 public int CompressionLevel {get;set;}
 ```
 
@@ -76,7 +76,7 @@ Usage:
 
 Example:
 ```cs
-[FlagArg("overwrite", help: "Overwrite existing files without warning")]
+[FlagArg("overwrite", helpText: "Overwrite existing files without warning")]
 public bool Overwrite {get;set;}
 ```
 
@@ -94,7 +94,7 @@ Usage:
 
 Example:
 ```cs
-[PositionalArgument("input_file", help: "File to compress")]
+[PositionalArgument("input_file", helpText: "File to compress")]
 public string InFile {get;set;}
 ```
 
@@ -128,28 +128,28 @@ A typical use case would look similar to this:
 
 public class CMDLineArgs
 {
-    [FlagArg("verbose", help:"Print all messages to console")]
+    [FlagArg("verbose", helpText:"Print all messages to console")]
     public bool Verbose {get;set;}
 
-    [Subcommand("unpack", help:"Unpack an archive")]
+    [Subcommand("unpack", helpText:"Unpack an archive")]
     public UnpackSubcommand UnpackCommand {get;set;}
 
-    [Subcommand("verify", help:"Verify the contents of an archive")]
+    [Subcommand("verify", helpText:"Verify the contents of an archive")]
     public VeryifySubcommand VerifyCommand {get;set;}
 }
 
 public class UnpackSubcommand
 {
-    [PositionalArgument("inputFile", help:"Archive file to unpack")]
+    [PositionalArgument("inputFile", helpText:"Archive file to unpack")]
     public string InputFile{get;set;}
 
-    [NamedArgument('o', "outputDir", help:"Directory to unpack into")]
+    [NamedArgument('o', "outputDir", helpText:"Directory to unpack into")]
     public string OutputDir{get;set;}
 }
 
 public class VerifySubcommand
 {
-    [PositionalArgument("inputFile", help:"Archive file to verify")]
+    [PositionalArgument("inputFile", helpText:"Archive file to verify")]
     public string InputFile{get;set;}
 }
 ```
@@ -181,7 +181,7 @@ $ Unpacking some_archive.7z
 Any argument can have a default value assigned to it simply by assigning a value to the property delcaration:
 
 ```cs
-[NamedArgument('i',"iterations", help: "Number of times to process file")]
+[NamedArgument('i',"iterations", helpText: "Number of times to process file")]
 public int Iterations {get;set;} = 42;
 ```
 

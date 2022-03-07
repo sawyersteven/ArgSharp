@@ -2,6 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
+    <PackageId>ArgSharp</PackageId> 
+    <Version>1.0.0</Version> 
+    <Authors>Steven Sawyer</Authors> 
+    <PackageTags>argument,command line,reflection</PackageTags> 
+    <Description>A small, simple, reflection-based command-line argument parser</Description>
+    <PackageProjectUrl>https://github.com/sawyersteven/ArgSharp</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/sawyersteven/ArgSharp</RepositoryUrl>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
 </Project>
