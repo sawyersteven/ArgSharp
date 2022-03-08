@@ -24,6 +24,7 @@ namespace ArgSharp
 
         private List<string> inputArgs;
         public Command Root { get; set; }
+        public bool ExitIfPrintText { get; set; } = true;
 
         public Parser(object obj)
         {
@@ -31,7 +32,7 @@ namespace ArgSharp
         }
 
         //
-        public void Parse(string[] args, bool exitIfPrintText = true)
+        public void Parse(string[] args, Action<object> postProcess = null)
         {
             this.inputArgs = new List<string>(args);
 
@@ -39,17 +40,18 @@ namespace ArgSharp
             if (Array.IndexOf(args, "--help") != -1)
             {
                 Print.Usage(Root);
-                if (exitIfPrintText) Environment.Exit(0);
+                if (ExitIfPrintText) Environment.Exit(0);
             }
             else if (Array.IndexOf(args, "--version") != -1)
             {
                 Print.Version();
-                if (exitIfPrintText) Environment.Exit(0);
+                if (ExitIfPrintText) Environment.Exit(0);
             }
             else
             {
                 AssignValues(Root);
             }
+            if (postProcess != null) postProcess(Root.Obj);
             GC.Collect();
         }
 

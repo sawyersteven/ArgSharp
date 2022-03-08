@@ -28,7 +28,7 @@ namespace ArgSharp.Tests
 
             outList.Lines.Clear();
             var a = new HelpMessages();
-            new ArgSharp.Parser(a).Parse(new string[] { "--help" }, false);
+            new ArgSharp.Parser(a) { ExitIfPrintText = false }.Parse(new string[] { "--help" });
             Assert.AreEqual("Usage: testhost [-b ArgumentB] [--flagA] -a ArgumentA posA", outList.Lines[1]);
         }
 
@@ -40,7 +40,7 @@ namespace ArgSharp.Tests
 
             outList.Lines.Clear();
             var a = new HelpMessages();
-            new ArgSharp.Parser(a).Parse(new string[] { "--version" }, false);
+            new ArgSharp.Parser(a) { ExitIfPrintText = false }.Parse(new string[] { "--version" });
             Assert.AreEqual("testhost (1.0.0)", outList.Lines[0]);
         }
 
@@ -52,7 +52,7 @@ namespace ArgSharp.Tests
 
             outList.Lines.Clear();
             var a = new HelpMessages();
-            new ArgSharp.Parser(a).Parse(new string[] { "--help" }, false);
+            new ArgSharp.Parser(a) { ExitIfPrintText = false }.Parse(new string[] { "--help" });
 
             int[] indexes = new int[3]; // optional, required, commands
             for (int i = 0; i < outList.Lines.Count; i++)
@@ -82,7 +82,7 @@ namespace ArgSharp.Tests
             outList.Lines.Clear();
 
             var nsc = new NestedSubcommandContainer();
-            new ArgSharp.Parser(nsc).Parse(new string[] { "nestedSubChild", "nestedSubGrandchild", "--help" }, false);
+            new ArgSharp.Parser(nsc) { ExitIfPrintText = false }.Parse(new string[] { "nestedSubChild", "nestedSubGrandchild", "--help" });
             Assert.AreEqual("Usage: testhost nestedSubChild nestedSubGrandchild [--grandchildFlag]", outList.Lines[1]);
         }
     }
