@@ -4,7 +4,7 @@ using ArgSharp.Exceptions;
 
 namespace ArgSharp.Attributes
 {
-    public static class Reserved
+    internal static class Reserved
     {
         public static readonly string[] Names = new string[] { "help", "version" };
     }
@@ -60,7 +60,6 @@ namespace ArgSharp.Attributes
         }
 
         public override (string, string, string) Usage() => (Name, "", HelpText);
-
     }
 
     // Creates a named argument eg `app.exe --outfile /tmp/out.txt`

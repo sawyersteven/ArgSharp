@@ -1,4 +1,3 @@
-using ArgSharp.Attributes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 /*
@@ -15,22 +14,20 @@ namespace ArgSharp.Tests
         public void TestPostProcessNumbers()
         {
             string[] positionalArgs = new string[] { "1", "2", "3", "5", "8", "13", "21", "3", "55.5", "89.9", "144.4", "I'm a string" };
-            PositionalPrimitives pp = new PositionalPrimitives();
 
-            new ArgSharp.Parser(pp).Parse(positionalArgs, (parsed) =>
+            var pp = new ArgSharp.Parser<PositionalPrimitives>().Parse(positionalArgs, (parsed) =>
             {
-                var p = (PositionalPrimitives)parsed;
-                p.byteProp--;
-                p.shortProp++;
-                p.ushortProp--;
-                p.intProp++;
-                p.uintProp--;
-                p.longProp++;
-                p.ulongProp *= 2;
-                p.charProp--;
-                p.floatProp++;
-                p.doubleProp--;
-                p.decimalProp++;
+                parsed.byteProp--;
+                parsed.shortProp++;
+                parsed.ushortProp--;
+                parsed.intProp++;
+                parsed.uintProp--;
+                parsed.longProp++;
+                parsed.ulongProp *= 2;
+                parsed.charProp--;
+                parsed.floatProp++;
+                parsed.doubleProp--;
+                parsed.decimalProp++;
             });
 
             Assert.AreEqual<byte>(1 - 1, pp.byteProp);
@@ -45,7 +42,6 @@ namespace ArgSharp.Tests
             Assert.AreEqual<double>(89.9d - 1, pp.doubleProp);
             Assert.AreEqual<decimal>(144.4m + 1, pp.decimalProp);
             Assert.AreEqual<string>("I'm a string", pp.stringProp);
-
         }
     }
 }

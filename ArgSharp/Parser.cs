@@ -6,34 +6,37 @@ using ArgSharp.Exceptions;
 
 namespace ArgSharp
 {
-    public class Parser
+    internal class Command
     {
-        public class Command
+        public readonly object Obj;
+        public readonly string Name;
+        public List<ArgBase> Attributes = new List<ArgBase>();
+        public Command Subcommand { get; set; }
+
+        public Command(object obj, string name)
         {
-            public readonly object Obj;
-            public readonly string Name;
-            public List<ArgBase> Attributes = new List<ArgBase>();
-            public Command Subcommand { get; set; }
-
-            public Command(object obj, string name)
-            {
-                Obj = obj;
-                Name = name;
-            }
+            Obj = obj;
+            Name = name;
         }
+    }
 
+    public class Parser<T>
+    {
         private List<string> inputArgs;
-        public Command Root { get; set; }
+        private Command Root { get; set; }
         public bool ExitIfPrintText { get; set; } = true;
 
-        public Parser(object obj)
+        private T rootObj;
+
+        public Parser()
         {
-            Root = new Command(obj, System.AppDomain.CurrentDomain.FriendlyName);
+            rootObj = Activator.CreateInstance<T>();
         }
 
-        //
-        public void Parse(string[] args, Action<object> postProcess = null)
+        public T Parse(string[] args, Action<T> postProcess = null)
         {
+            Root = new Command(rootObj, System.AppDomain.CurrentDomain.FriendlyName);
+
             this.inputArgs = new List<string>(args);
 
             ParseAttributes(Root);
@@ -51,8 +54,9 @@ namespace ArgSharp
             {
                 AssignValues(Root);
             }
-            if (postProcess != null) postProcess(Root.Obj);
+            if (postProcess != null) postProcess(rootObj);
             GC.Collect();
+            return rootObj;
         }
 
         // Recursively assign values from argument attributes into properties

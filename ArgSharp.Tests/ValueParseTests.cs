@@ -29,8 +29,7 @@ namespace ArgSharp.Tests
             "-g", "I'm a string"
             };
 
-            NamedPrimitives np = new NamedPrimitives();
-            new ArgSharp.Parser(np).Parse(shortNameArgs);
+            var np = new ArgSharp.Parser<NamedPrimitives>().Parse(shortNameArgs);
             Assert.AreEqual<byte>(1, np.byteProp);
             Assert.AreEqual<short>(2, np.shortProp);
             Assert.AreEqual<ushort>(3, np.ushortProp);
@@ -63,8 +62,8 @@ namespace ArgSharp.Tests
             "--string", "I'm a string"
             };
 
-            NamedPrimitives np = new NamedPrimitives();
-            new ArgSharp.Parser(np).Parse(longNameArgs);
+
+            var np = new ArgSharp.Parser<NamedPrimitives>().Parse(longNameArgs);
             Assert.AreEqual<byte>(1, np.byteProp);
             Assert.AreEqual<short>(2, np.shortProp);
             Assert.AreEqual<ushort>(3, np.ushortProp);
@@ -83,8 +82,7 @@ namespace ArgSharp.Tests
         public void TestFlag()
         {
             string[] flagArgs = new string[] { "--True1", "--True2" };
-            var f = new FlagBooleans();
-            new ArgSharp.Parser(f).Parse(flagArgs);
+            var f = new ArgSharp.Parser<FlagBooleans>().Parse(flagArgs);
             Assert.AreEqual(false, f.False1Prop);
             Assert.AreEqual(true, f.True1Prop);
             Assert.AreEqual(true, f.True2Prop);
@@ -95,8 +93,7 @@ namespace ArgSharp.Tests
         public void TestPositionals()
         {
             string[] positionalArgs = new string[] { "1", "2", "3", "5", "8", "13", "21", "3", "55.5", "89.9", "144.4", "I'm a string" };
-            PositionalPrimitives pp = new PositionalPrimitives();
-            new ArgSharp.Parser(pp).Parse(positionalArgs);
+            var pp = new ArgSharp.Parser<PositionalPrimitives>().Parse(positionalArgs);
             Assert.AreEqual<byte>(1, pp.byteProp);
             Assert.AreEqual<short>(2, pp.shortProp);
             Assert.AreEqual<ushort>(3, pp.ushortProp);
@@ -115,8 +112,7 @@ namespace ArgSharp.Tests
         public void TestDefaultValues()
         {
             string[] noArgs = new string[] { };
-            DefaultValues dv = new DefaultValues();
-            new ArgSharp.Parser(dv).Parse(noArgs);
+            var dv = new ArgSharp.Parser<DefaultValues>().Parse(noArgs);
             Assert.AreEqual(456, dv.Def);
         }
     }

@@ -37,9 +37,9 @@ Parse your arguments:
 ```cs
 public static void Main(string[] args)
 {
-    SomeClass a = new SomeClass();
-    new ArgSharp.Parser(a).Parse(args);
-    Console.WriteLine($"Input File is {a.InFile}");
+    var parser = new ArgSharp.Parser<CMDLineArgs>();
+    CMDLineArgs parsedCMD = parser.Parse(args);
+    Console.WriteLine($"Input File is {parsedCMD.InFile}");
 }
 ```
 
@@ -159,12 +159,12 @@ Then handle the arguments:
 ```cs
 public static void Main(string[] args)
 {
-    CMDLineArgs a = new CMDLineArgs();
-    new ArgSharp.Parser(a).Parse(args);
-    if(a.UnpackCommand != null)
+    var parser = new ArgSharp.Parser<CMDLineArgs>;
+    CMDLineArgs parsedCMD = parser.Parse(args);
+    if(parsedCMD.UnpackCommand != null)
     {
         Console.WriteLine($"Unpacking {a.InFile}");
-    } else if (a.VerifyCommand != null){
+    } else if (parsedCMD.VerifyCommand != null){
         Console.WriteLine($"Verifying archive {a.InFile}");
     }
 }

@@ -6,9 +6,9 @@ using ArgSharp.Attributes;
 namespace ArgSharp
 {
     using HelpInfo = ValueTuple<string, string, string>;
-    public static class Print
+    internal static class Print
     {
-        public static void Usage(Parser.Command root)
+        public static void Usage(Command root)
         {
             new UsagePrinter(root);
         }
@@ -20,7 +20,7 @@ namespace ArgSharp
             private List<HelpInfo> requiredArgs = new List<HelpInfo>();
             private List<HelpInfo> optionalArgs = new List<HelpInfo>();
             private List<HelpInfo> subCommands = new List<HelpInfo>();
-            public UsagePrinter(Parser.Command root)
+            public UsagePrinter(Command root)
             {
 
                 CollectUsageData(root);
@@ -50,7 +50,7 @@ namespace ArgSharp
             }
 
             // Always obey the chain o' command
-            private string CommandChain(Parser.Command root)
+            private string CommandChain(Command root)
             {
                 List<string> commandChain = new List<string>();
                 var current = root;
@@ -62,7 +62,7 @@ namespace ArgSharp
                 return string.Join(' ', commandChain);
             }
 
-            private void CollectUsageData(Parser.Command command)
+            private void CollectUsageData(Command command)
             {
                 foreach (var a in command.Attributes)
                 {
@@ -86,7 +86,7 @@ namespace ArgSharp
                 if (command.Subcommand != null) CollectUsageData(command.Subcommand);
             }
 
-            private string BuildArgumentString(Parser.Command root)
+            private string BuildArgumentString(Command root)
             {
                 List<string> argString = new List<string>();
 

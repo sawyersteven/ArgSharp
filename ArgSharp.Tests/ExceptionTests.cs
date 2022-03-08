@@ -17,10 +17,9 @@ namespace ArgSharp.Tests
         public void TestIncompatibleNamedValue()
         {
             string[] incompatibleArgs = new string[] { "--byte", $"{byte.MaxValue + 1}" };
-            NamedPrimitives np = new NamedPrimitives();
             Assert.ThrowsException<IncompatibleValueException>(() =>
             {
-                new ArgSharp.Parser(np).Parse(incompatibleArgs);
+                new ArgSharp.Parser<NamedPrimitives>().Parse(incompatibleArgs);
             });
         }
 
@@ -28,10 +27,9 @@ namespace ArgSharp.Tests
         public void TestIncompatiblePositionalValue()
         {
             string[] incompatibleArgs = new string[] { $"{byte.MaxValue + 1}" };
-            PositionalPrimitives pp = new PositionalPrimitives();
             Assert.ThrowsException<IncompatibleValueException>(() =>
             {
-                new ArgSharp.Parser(pp).Parse(incompatibleArgs);
+                new ArgSharp.Parser<PositionalPrimitives>().Parse(incompatibleArgs);
             });
         }
 
@@ -39,10 +37,9 @@ namespace ArgSharp.Tests
         public void TestRequiredNamedValue()
         {
             string[] incompatibleArgs = new string[] { "--int", "5678" };
-            NamedPrimitives np = new NamedPrimitives();
             Assert.ThrowsException<RequiredArgumentException>(() =>
             {
-                new ArgSharp.Parser(np).Parse(incompatibleArgs);
+                new ArgSharp.Parser<NamedPrimitives>().Parse(incompatibleArgs);
             });
         }
 
@@ -50,10 +47,9 @@ namespace ArgSharp.Tests
         public void TestMissingNamedValue()
         {
             string[] incompatibleArgs = new string[] { "--byte", "1", "--long" };
-            NamedPrimitives np = new NamedPrimitives();
             Assert.ThrowsException<MissingValueException>(() =>
             {
-                new ArgSharp.Parser(np).Parse(incompatibleArgs);
+                new ArgSharp.Parser<NamedPrimitives>().Parse(incompatibleArgs);
             });
         }
 
@@ -62,10 +58,9 @@ namespace ArgSharp.Tests
         {
             // Contains all but last arg for stringProp
             string[] incompatibleArgs = new string[] { "1", "2", "3", "5", "8", "13", "21", "3", "55.5", "89.9", "144.4" };
-            NamedPrimitives np = new NamedPrimitives();
             Assert.ThrowsException<RequiredArgumentException>(() =>
             {
-                new ArgSharp.Parser(np).Parse(incompatibleArgs);
+                new ArgSharp.Parser<NamedPrimitives>().Parse(incompatibleArgs);
             });
         }
 
@@ -73,10 +68,9 @@ namespace ArgSharp.Tests
         public void TestUnknownNamedValue()
         {
             string[] incompatibleArgs = new string[] { "--IDontExist", "null" };
-            Empty mt = new Empty();
             Assert.ThrowsException<UnknownArgumentException>(() =>
             {
-                new ArgSharp.Parser(mt).Parse(incompatibleArgs);
+                new ArgSharp.Parser<Empty>().Parse(incompatibleArgs);
             });
         }
 
@@ -84,10 +78,9 @@ namespace ArgSharp.Tests
         public void TestExtraPositionalValue()
         {
             string[] incompatibleArgs = new string[] { "1", "2", "3", "5", "8", "13", "21", "3", "55.5", "89.9", "144.4", "I'm a string", "I'm one too many" };
-            PositionalPrimitives pp = new PositionalPrimitives();
             Assert.ThrowsException<UnknownArgumentException>(() =>
             {
-                new ArgSharp.Parser(pp).Parse(incompatibleArgs);
+                new ArgSharp.Parser<PositionalPrimitives>().Parse(incompatibleArgs);
             });
         }
 
@@ -95,10 +88,9 @@ namespace ArgSharp.Tests
         public void TestUnknownFlagValue()
         {
             string[] incompatibleArgs = new string[] { "--NotARealFlag" };
-            FlagBooleans fb = new FlagBooleans();
             Assert.ThrowsException<UnknownArgumentException>(() =>
             {
-                new ArgSharp.Parser(fb).Parse(incompatibleArgs);
+                new ArgSharp.Parser<FlagBooleans>().Parse(incompatibleArgs);
             });
         }
 
@@ -108,22 +100,22 @@ namespace ArgSharp.Tests
             Assert.ThrowsException<InvalidNameException>(() =>
             {
                 ReservedHelpFlag rh = new ReservedHelpFlag();
-                new ArgSharp.Parser(rh).Parse(new string[] { "--help" });
+                new ArgSharp.Parser<ReservedHelpFlag>().Parse(new string[] { "--help" });
             });
 
             Assert.ThrowsException<InvalidNameException>(() =>
             {
-                new ArgSharp.Parser(new ReservedVersionFlag()).Parse(new string[] { "--version" });
+                new ArgSharp.Parser<ReservedVersionName>().Parse(new string[] { "--version" });
             });
 
             Assert.ThrowsException<InvalidNameException>(() =>
             {
-                new ArgSharp.Parser(new ReservedHelpName()).Parse(new string[] { "--help" });
+                new ArgSharp.Parser<ReservedHelpFlag>().Parse(new string[] { "--help" });
             });
 
             Assert.ThrowsException<InvalidNameException>(() =>
             {
-                new ArgSharp.Parser(new ReservedVersionName()).Parse(new string[] { "--version" });
+                new ArgSharp.Parser<ReservedVersionName>().Parse(new string[] { "--version" });
             });
         }
 
@@ -132,8 +124,7 @@ namespace ArgSharp.Tests
         {
             Assert.ThrowsException<InvalidNameException>(() =>
             {
-                WhiteSpaceSubcommand ws = new WhiteSpaceSubcommand();
-                new ArgSharp.Parser(ws).Parse(new string[] { "Mock Subcommand" });
+                new ArgSharp.Parser<WhiteSpaceSubcommand>().Parse(new string[] { "Mock Subcommand" });
             });
         }
 
@@ -142,8 +133,7 @@ namespace ArgSharp.Tests
         {
             Assert.ThrowsException<InvalidOperationException>(() =>
             {
-                FlagOnNonBool ws = new FlagOnNonBool();
-                new ArgSharp.Parser(ws).Parse(new string[] { });
+                new ArgSharp.Parser<FlagOnNonBool>().Parse(new string[] { });
             });
         }
     }
