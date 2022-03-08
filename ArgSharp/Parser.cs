@@ -20,43 +20,59 @@ namespace ArgSharp
         }
     }
 
-    public class Parser<T>
+    public class Parser
     {
+        public bool ExitAfterPrint { get; set; } = true;
+        public bool PrintHelpOnError { get; set; } = true;
+
         private List<string> inputArgs;
-        private Command Root { get; set; }
-        public bool ExitIfPrintText { get; set; } = true;
+        private Command RootCommand { get; set; }
+        private object rootObj;
 
-        private T rootObj;
-
-        public Parser()
+        public void ParseInto(string[] args, object obj)
         {
-            rootObj = Activator.CreateInstance<T>();
+            rootObj = obj;
+            ParseIntoRootObj(args);
         }
 
-        public T Parse(string[] args, Action<T> postProcess = null)
+        public T ParseIntoNew<T>(string[] args)
         {
-            Root = new Command(rootObj, System.AppDomain.CurrentDomain.FriendlyName);
+            rootObj = Activator.CreateInstance<T>();
+            ParseIntoRootObj(args);
+            return (T)rootObj;
+        }
 
+        private void ParseIntoRootObj(string[] args)
+        {
             this.inputArgs = new List<string>(args);
+            RootCommand = new Command(rootObj, System.AppDomain.CurrentDomain.FriendlyName);
 
-            ParseAttributes(Root);
-            if (Array.IndexOf(args, "--help") != -1)
+            ParseAttributes(RootCommand);
+            if (inputArgs.Contains("--help"))
             {
-                Print.Usage(Root);
-                if (ExitIfPrintText) Environment.Exit(0);
+                Print.Usage(RootCommand);
+                if (ExitAfterPrint) Environment.Exit(0);
             }
-            else if (Array.IndexOf(args, "--version") != -1)
+            else if (inputArgs.Contains("--version"))
             {
                 Print.Version();
-                if (ExitIfPrintText) Environment.Exit(0);
+                if (ExitAfterPrint) Environment.Exit(0);
             }
             else
             {
-                AssignValues(Root);
+                try
+                {
+                    AssignValues(RootCommand);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    if (PrintHelpOnError) Print.Usage(RootCommand);
+                    if (ExitAfterPrint) Environment.Exit(1);
+                    throw e;
+                }
             }
-            if (postProcess != null) postProcess(rootObj);
             GC.Collect();
-            return rootObj;
         }
 
         // Recursively assign values from argument attributes into properties
@@ -149,6 +165,33 @@ namespace ArgSharp
             string v = inputArgs[0];
             inputArgs.RemoveAt(0);
             return v;
+        }
+
+        // Attempts to find key and convert type to value's type
+        // Returns bool indicating if the key was found. Will throw exception
+        // if arg cannot be converted into value's type
+        public static bool TryGetName<TO>(string[] args, char shortName, string longName, out TO value)
+        {
+            string s = "-" + shortName;
+            string l = "--" + longName;
+            value = default(TO);
+            for (int i = 0; i < args.Length; i++)
+            {
+                if (args[i] == s || args[i] == l)
+                {
+                    if (args.Length > i + 1 && !args[i + 1].StartsWith('-'))
+                    {
+                        string v = args[i + 1];
+                        value = (TO)Convert.ChangeType(v, typeof(TO));
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            return false;
         }
 
         // Collects attributes and props from node's obj into node.Attributes

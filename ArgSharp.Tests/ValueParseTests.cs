@@ -29,7 +29,7 @@ namespace ArgSharp.Tests
             "-g", "I'm a string"
             };
 
-            var np = new ArgSharp.Parser<NamedPrimitives>().Parse(shortNameArgs);
+            var np = new ArgSharp.Parser().ParseIntoNew<NamedPrimitives>(shortNameArgs);
             Assert.AreEqual<byte>(1, np.byteProp);
             Assert.AreEqual<short>(2, np.shortProp);
             Assert.AreEqual<ushort>(3, np.ushortProp);
@@ -63,7 +63,7 @@ namespace ArgSharp.Tests
             };
 
 
-            var np = new ArgSharp.Parser<NamedPrimitives>().Parse(longNameArgs);
+            var np = new ArgSharp.Parser().ParseIntoNew<NamedPrimitives>(longNameArgs);
             Assert.AreEqual<byte>(1, np.byteProp);
             Assert.AreEqual<short>(2, np.shortProp);
             Assert.AreEqual<ushort>(3, np.ushortProp);
@@ -82,7 +82,19 @@ namespace ArgSharp.Tests
         public void TestFlag()
         {
             string[] flagArgs = new string[] { "--True1", "--True2" };
-            var f = new ArgSharp.Parser<FlagBooleans>().Parse(flagArgs);
+            var f = new ArgSharp.Parser().ParseIntoNew<FlagBooleans>(flagArgs);
+            Assert.AreEqual(false, f.False1Prop);
+            Assert.AreEqual(true, f.True1Prop);
+            Assert.AreEqual(true, f.True2Prop);
+            Assert.AreEqual(false, f.False2Prop);
+        }
+
+        [TestMethod]
+        public void TestFlagsIntoExisting()
+        {
+            string[] flagArgs = new string[] { "--True1", "--True2" };
+            var f = new FlagBooleans();
+            new ArgSharp.Parser().ParseInto(flagArgs, f);
             Assert.AreEqual(false, f.False1Prop);
             Assert.AreEqual(true, f.True1Prop);
             Assert.AreEqual(true, f.True2Prop);
@@ -93,7 +105,7 @@ namespace ArgSharp.Tests
         public void TestPositionals()
         {
             string[] positionalArgs = new string[] { "1", "2", "3", "5", "8", "13", "21", "3", "55.5", "89.9", "144.4", "I'm a string" };
-            var pp = new ArgSharp.Parser<PositionalPrimitives>().Parse(positionalArgs);
+            var pp = new ArgSharp.Parser().ParseIntoNew<PositionalPrimitives>(positionalArgs);
             Assert.AreEqual<byte>(1, pp.byteProp);
             Assert.AreEqual<short>(2, pp.shortProp);
             Assert.AreEqual<ushort>(3, pp.ushortProp);
@@ -112,8 +124,21 @@ namespace ArgSharp.Tests
         public void TestDefaultValues()
         {
             string[] noArgs = new string[] { };
-            var dv = new ArgSharp.Parser<DefaultValues>().Parse(noArgs);
+            var dv = new ArgSharp.Parser().ParseIntoNew<DefaultValues>(noArgs);
             Assert.AreEqual(456, dv.Def);
+        }
+
+        [TestMethod]
+        public void TestTryGetNamed()
+        {
+            string[] args = new string[] { "--byte", "4" };
+            byte value;
+            bool found = ArgSharp.Parser.TryGetName(args, 'b', "byte", out value);
+            Assert.IsTrue(found);
+            Assert.AreEqual<byte>(4, value);
+            found = ArgSharp.Parser.TryGetName(args, 'x', "notavalue", out value);
+            Assert.IsFalse(found);
+            Assert.AreEqual<byte>(0, value);
         }
     }
 }

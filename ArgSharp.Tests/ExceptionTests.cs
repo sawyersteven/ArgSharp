@@ -19,7 +19,7 @@ namespace ArgSharp.Tests
             string[] incompatibleArgs = new string[] { "--byte", $"{byte.MaxValue + 1}" };
             Assert.ThrowsException<IncompatibleValueException>(() =>
             {
-                new ArgSharp.Parser<NamedPrimitives>().Parse(incompatibleArgs);
+                new ArgSharp.Parser() { ExitAfterPrint = false }.ParseIntoNew<NamedPrimitives>(incompatibleArgs);
             });
         }
 
@@ -29,7 +29,7 @@ namespace ArgSharp.Tests
             string[] incompatibleArgs = new string[] { $"{byte.MaxValue + 1}" };
             Assert.ThrowsException<IncompatibleValueException>(() =>
             {
-                new ArgSharp.Parser<PositionalPrimitives>().Parse(incompatibleArgs);
+                new ArgSharp.Parser() { ExitAfterPrint = false }.ParseIntoNew<PositionalPrimitives>(incompatibleArgs);
             });
         }
 
@@ -39,7 +39,7 @@ namespace ArgSharp.Tests
             string[] incompatibleArgs = new string[] { "--int", "5678" };
             Assert.ThrowsException<RequiredArgumentException>(() =>
             {
-                new ArgSharp.Parser<NamedPrimitives>().Parse(incompatibleArgs);
+                new ArgSharp.Parser() { ExitAfterPrint = false }.ParseIntoNew<NamedPrimitives>(incompatibleArgs);
             });
         }
 
@@ -49,7 +49,7 @@ namespace ArgSharp.Tests
             string[] incompatibleArgs = new string[] { "--byte", "1", "--long" };
             Assert.ThrowsException<MissingValueException>(() =>
             {
-                new ArgSharp.Parser<NamedPrimitives>().Parse(incompatibleArgs);
+                new ArgSharp.Parser() { ExitAfterPrint = false }.ParseIntoNew<NamedPrimitives>(incompatibleArgs);
             });
         }
 
@@ -60,7 +60,7 @@ namespace ArgSharp.Tests
             string[] incompatibleArgs = new string[] { "1", "2", "3", "5", "8", "13", "21", "3", "55.5", "89.9", "144.4" };
             Assert.ThrowsException<RequiredArgumentException>(() =>
             {
-                new ArgSharp.Parser<NamedPrimitives>().Parse(incompatibleArgs);
+                new ArgSharp.Parser() { ExitAfterPrint = false }.ParseIntoNew<NamedPrimitives>(incompatibleArgs);
             });
         }
 
@@ -70,7 +70,7 @@ namespace ArgSharp.Tests
             string[] incompatibleArgs = new string[] { "--IDontExist", "null" };
             Assert.ThrowsException<UnknownArgumentException>(() =>
             {
-                new ArgSharp.Parser<Empty>().Parse(incompatibleArgs);
+                new ArgSharp.Parser() { ExitAfterPrint = false }.ParseIntoNew<Empty>(incompatibleArgs);
             });
         }
 
@@ -80,7 +80,7 @@ namespace ArgSharp.Tests
             string[] incompatibleArgs = new string[] { "1", "2", "3", "5", "8", "13", "21", "3", "55.5", "89.9", "144.4", "I'm a string", "I'm one too many" };
             Assert.ThrowsException<UnknownArgumentException>(() =>
             {
-                new ArgSharp.Parser<PositionalPrimitives>().Parse(incompatibleArgs);
+                new ArgSharp.Parser() { ExitAfterPrint = false }.ParseIntoNew<PositionalPrimitives>(incompatibleArgs);
             });
         }
 
@@ -90,7 +90,7 @@ namespace ArgSharp.Tests
             string[] incompatibleArgs = new string[] { "--NotARealFlag" };
             Assert.ThrowsException<UnknownArgumentException>(() =>
             {
-                new ArgSharp.Parser<FlagBooleans>().Parse(incompatibleArgs);
+                new ArgSharp.Parser() { ExitAfterPrint = false }.ParseIntoNew<FlagBooleans>(incompatibleArgs);
             });
         }
 
@@ -100,22 +100,22 @@ namespace ArgSharp.Tests
             Assert.ThrowsException<InvalidNameException>(() =>
             {
                 ReservedHelpFlag rh = new ReservedHelpFlag();
-                new ArgSharp.Parser<ReservedHelpFlag>().Parse(new string[] { "--help" });
+                new ArgSharp.Parser() { ExitAfterPrint = false }.ParseIntoNew<ReservedHelpFlag>(new string[] { "--help" });
             });
 
             Assert.ThrowsException<InvalidNameException>(() =>
             {
-                new ArgSharp.Parser<ReservedVersionName>().Parse(new string[] { "--version" });
+                new ArgSharp.Parser() { ExitAfterPrint = false }.ParseIntoNew<ReservedVersionName>(new string[] { "--version" });
             });
 
             Assert.ThrowsException<InvalidNameException>(() =>
             {
-                new ArgSharp.Parser<ReservedHelpFlag>().Parse(new string[] { "--help" });
+                new ArgSharp.Parser() { ExitAfterPrint = false }.ParseIntoNew<ReservedHelpFlag>(new string[] { "--help" });
             });
 
             Assert.ThrowsException<InvalidNameException>(() =>
             {
-                new ArgSharp.Parser<ReservedVersionName>().Parse(new string[] { "--version" });
+                new ArgSharp.Parser() { ExitAfterPrint = false }.ParseIntoNew<ReservedVersionName>(new string[] { "--version" });
             });
         }
 
@@ -124,7 +124,7 @@ namespace ArgSharp.Tests
         {
             Assert.ThrowsException<InvalidNameException>(() =>
             {
-                new ArgSharp.Parser<WhiteSpaceSubcommand>().Parse(new string[] { "Mock Subcommand" });
+                new ArgSharp.Parser() { ExitAfterPrint = false }.ParseIntoNew<WhiteSpaceSubcommand>(new string[] { "Mock Subcommand" });
             });
         }
 
@@ -133,7 +133,7 @@ namespace ArgSharp.Tests
         {
             Assert.ThrowsException<InvalidOperationException>(() =>
             {
-                new ArgSharp.Parser<FlagOnNonBool>().Parse(new string[] { });
+                new ArgSharp.Parser() { ExitAfterPrint = false }.ParseIntoNew<FlagOnNonBool>(new string[] { });
             });
         }
     }

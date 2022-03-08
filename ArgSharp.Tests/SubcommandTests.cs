@@ -17,7 +17,7 @@ namespace ArgSharp.Tests
         public void TestSubCommandWithNamed()
         {
             string[] args = new string[] { "withNamedSub", "--float", "123.456" };
-            var scc = new ArgSharp.Parser<SubcommandContainer>().Parse(args);
+            var scc = new ArgSharp.Parser().ParseIntoNew<SubcommandContainer>(args);
             Assert.IsNotNull(scc.subcomWithName);
             Assert.AreEqual(123.456f, scc.subcomWithName.floatProp);
         }
@@ -26,7 +26,7 @@ namespace ArgSharp.Tests
         public void TestSubCommandWithFlags()
         {
             string[] args = new string[] { "withFlagsSub", "--on" };
-            var scc = new ArgSharp.Parser<SubcommandContainer>().Parse(args);
+            var scc = new ArgSharp.Parser().ParseIntoNew<SubcommandContainer>(args);
             Assert.IsNotNull(scc.subcomWithFlags);
             Assert.AreEqual(true, scc.subcomWithFlags.shouldBeOn);
             Assert.AreEqual(false, scc.subcomWithFlags.shouldBeOff);
@@ -36,7 +36,7 @@ namespace ArgSharp.Tests
         public void TestSubCommandWithPositionals()
         {
             string[] args = new string[] { "withPositionalsSub", "first", "2", "3" };
-            var scc = new ArgSharp.Parser<SubcommandContainer>().Parse(args);
+            var scc = new ArgSharp.Parser().ParseIntoNew<SubcommandContainer>(args);
             Assert.IsNotNull(scc.subcomWithPositionals);
             Assert.AreEqual("first", scc.subcomWithPositionals.first);
             Assert.AreEqual(2, scc.subcomWithPositionals.second);
@@ -47,7 +47,7 @@ namespace ArgSharp.Tests
         public void TestSubcommandWithParentArgs()
         {
             string[] args = new string[] { "withNamedSub", "--float", "123.456", "--namedParam", "named param in parent", "--flagParam", };
-            var scc = new ArgSharp.Parser<SubcommandContainer>().Parse(args);
+            var scc = new ArgSharp.Parser().ParseIntoNew<SubcommandContainer>(args);
             Assert.IsNotNull(scc.subcomWithName);
             Assert.AreEqual(123.456f, scc.subcomWithName.floatProp);
             Assert.AreEqual("named param in parent", scc.namedParam);
@@ -66,7 +66,7 @@ namespace ArgSharp.Tests
                 containerPositional
             */
             string[] args = new string[] { "withNamedSub", "withFlagsSub", "--on", "-f", "987.654" };
-            var scc = new ArgSharp.Parser<SubcommandContainer>().Parse(args);
+            var scc = new ArgSharp.Parser().ParseIntoNew<SubcommandContainer>(args);
 
             Assert.IsNotNull(scc.subcomWithName);
             Assert.IsNull(scc.subcomWithFlags);

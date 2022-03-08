@@ -27,7 +27,7 @@ namespace ArgSharp.Tests
             Console.SetOut(outList);
 
             outList.Lines.Clear();
-            new ArgSharp.Parser<HelpMessages>() { ExitIfPrintText = false }.Parse(new string[] { "--help" });
+            new ArgSharp.Parser() { ExitAfterPrint = false }.ParseIntoNew<HelpMessages>(new string[] { "--help" });
             Assert.AreEqual("Usage: testhost [-b ArgumentB] [--flagA] -a ArgumentA posA", outList.Lines[1]);
         }
 
@@ -38,8 +38,8 @@ namespace ArgSharp.Tests
             Console.SetOut(outList);
 
             outList.Lines.Clear();
-            new ArgSharp.Parser<HelpMessages>() { ExitIfPrintText = false }.Parse(new string[] { "--version" });
-            Assert.AreEqual("testhost (1.1.0)", outList.Lines[0]);
+            new ArgSharp.Parser() { ExitAfterPrint = false }.ParseIntoNew<HelpMessages>(new string[] { "--version" });
+            Assert.AreEqual("testhost (1.2.0)", outList.Lines[0]);
         }
 
         [TestMethod]
@@ -49,7 +49,7 @@ namespace ArgSharp.Tests
             Console.SetOut(outList);
 
             outList.Lines.Clear();
-            new ArgSharp.Parser<HelpMessages>() { ExitIfPrintText = false }.Parse(new string[] { "--help" });
+            new ArgSharp.Parser() { ExitAfterPrint = false }.ParseIntoNew<HelpMessages>(new string[] { "--help" });
 
             int[] indexes = new int[3]; // optional, required, commands
             for (int i = 0; i < outList.Lines.Count; i++)
@@ -78,7 +78,7 @@ namespace ArgSharp.Tests
             Console.SetOut(outList);
             outList.Lines.Clear();
 
-            new ArgSharp.Parser<NestedSubcommandContainer>() { ExitIfPrintText = false }.Parse(new string[] { "nestedSubChild", "nestedSubGrandchild", "--help" });
+            new ArgSharp.Parser() { ExitAfterPrint = false }.ParseIntoNew<NestedSubcommandContainer>(new string[] { "nestedSubChild", "nestedSubGrandchild", "--help" });
             Assert.AreEqual("Usage: testhost nestedSubChild nestedSubGrandchild [--grandchildFlag]", outList.Lines[1]);
         }
     }
