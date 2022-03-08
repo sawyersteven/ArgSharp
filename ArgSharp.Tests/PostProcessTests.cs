@@ -19,17 +19,18 @@ namespace ArgSharp.Tests
 
             new ArgSharp.Parser(pp).Parse(positionalArgs, (parsed) =>
             {
-                pp.byteProp--;
-                pp.shortProp++;
-                pp.ushortProp--;
-                pp.intProp++;
-                pp.uintProp--;
-                pp.longProp++;
-                pp.ulongProp *= 2;
-                pp.charProp--;
-                pp.floatProp++;
-                pp.doubleProp--;
-                pp.decimalProp++;
+                var p = (PositionalPrimitives)parsed;
+                p.byteProp--;
+                p.shortProp++;
+                p.ushortProp--;
+                p.intProp++;
+                p.uintProp--;
+                p.longProp++;
+                p.ulongProp *= 2;
+                p.charProp--;
+                p.floatProp++;
+                p.doubleProp--;
+                p.decimalProp++;
             });
 
             Assert.AreEqual<byte>(1 - 1, pp.byteProp);
