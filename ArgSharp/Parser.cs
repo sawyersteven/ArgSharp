@@ -220,6 +220,8 @@ namespace ArgSharp
                 }
             }
 
+            if (depth >= inputArgs.Count) return;
+
             // Find subcommands and recursively parse into nodes
             foreach (var a in attrs)
             {
