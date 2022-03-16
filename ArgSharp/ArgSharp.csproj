@@ -10,6 +10,7 @@
     <PackageProjectUrl>https://github.com/sawyersteven/ArgSharp</PackageProjectUrl>
     <RepositoryUrl>https://github.com/sawyersteven/ArgSharp</RepositoryUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <IsTrimmable>false</IsTrimmable>
   </PropertyGroup>
 
 </Project>
