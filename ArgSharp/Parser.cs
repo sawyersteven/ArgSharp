@@ -69,7 +69,7 @@ namespace ArgSharp
                     Console.WriteLine(e);
                     if (PrintHelpOnError) Print.Usage(RootCommand);
                     if (ExitAfterPrint) Environment.Exit(1);
-                    throw e;
+                    throw;
                 }
             }
             GC.Collect();
