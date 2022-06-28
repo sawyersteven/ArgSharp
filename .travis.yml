@@ -1,0 +1,13 @@
+language: csharp
+mono: none
+dotnet: 6.0
+
+install:
+- dotnet restore
+
+script:
+ - dotnet build
+ - dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+ - dotnet tool install --global coveralls.net --version 1.0.0
+ - export PATH="$PATH:/home/travis/.dotnet/tools"
+ - csmacnz.Coveralls --opencover -i /path/to/coverage.opencover.xml --useRelativePaths --commitId $TRAVIS_COMMIT --commitBranch $TRAVIS_BRANCH --commitAuthor "$REPO_COMMIT_AUTHOR" --commitEmail "$REPO_COMMIT_AUTHOR_EMAIL" --commitMessage "$REPO_COMMIT_MESSAGE" --jobId $TRAVIS_JOB_ID  --serviceName travis-ci
