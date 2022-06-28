@@ -30,6 +30,6 @@ namespace ArgSharp.Exceptions
     // For when a required value is not included in the arg list
     public class RequiredArgumentException : System.Exception
     {
-        public RequiredArgumentException(string argName) : base($"Missing require argument: {argName}") { }
+        public RequiredArgumentException(string argName) : base($"Missing required argument: {argName}") { }
     }
 }

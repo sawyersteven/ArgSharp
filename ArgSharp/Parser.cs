@@ -79,7 +79,7 @@ namespace ArgSharp
         // This will consume and remove values in inputArgs and node.Attributes
         private void AssignValues(Command node)
         {
-            // // Consume flags and names
+            // Consume flags and names
             foreach (ArgBase a in node.Attributes)
             {
                 if (a is FlagArgumentAttribute)
