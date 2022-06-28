@@ -117,5 +117,6 @@ public abstract class ArgBase : Attribute
 {
     public string HelpText { get; set; }
     public virtual PropertyInfo Prop { get; set; }
+    //                 name,   type, helptext
     public abstract (string, string, string) Usage();
 }
