@@ -131,7 +131,19 @@ namespace ArgSharp
 
 
         // Returns bool indicating if flag is present in inputArgs. Removes string from list
-        private bool ConsumeFlag(FlagArgumentAttribute flagArg) => inputArgs.Remove(flagArg.Name);
+        private bool ConsumeFlag(FlagArgumentAttribute flagArg)
+        {
+            bool found = false;
+            if (flagArg.ShortName != null)
+            {
+                found |= inputArgs.Remove(flagArg.ShortName);
+            }
+            if (flagArg.LongName != null)
+            {
+                found |= inputArgs.Remove(flagArg.LongName);
+            }
+            return found;
+        }
 
         // Finds arg matching argument name, returning the following string
         // as the value. Will throw exception if arg has no value or if arg 

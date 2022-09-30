@@ -99,6 +99,18 @@ namespace ArgSharp.Tests
 
         [FlagArgument("False2")]
         public bool False2Prop { get; set; }
+
+        [FlagArgument('t')]
+        public bool TrueCharProp { get; set; }
+
+        [FlagArgument('f')]
+        public bool FalseCharProp { get; set; }
+
+        [FlagArgument('x', "isX", "")]
+        public bool xProp { get; set; }
+
+        [FlagArgument('y', "isY", "")]
+        public bool yProp { get; set; }
     }
 
     class DefaultValues

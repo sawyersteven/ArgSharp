@@ -48,18 +48,55 @@ namespace ArgSharp.Attributes
                 _Prop = value;
             }
         }
-        public string Name { get; set; }
-        public FlagArgumentAttribute(string name, string helpText = "")
+#nullable enable
+        public string? ShortName { get; set; }
+        public string? LongName { get; set; }
+#nullable restore
+
+        public FlagArgumentAttribute(string longName, string helpText = "")
         {
-            if (Array.IndexOf(Reserved.Names, name) != -1)
+            if (Array.IndexOf(Reserved.Names, longName) != -1)
             {
                 throw new InvalidNameException($"Arguments cannot use reserved names [{string.Join(',', Reserved.Names)}]");
             }
-            Name = "--" + name;
+            ShortName = null;
+            LongName = "--" + longName;
             HelpText = helpText;
         }
 
-        public override (string, string, string) Usage() => (Name, "", HelpText);
+        public FlagArgumentAttribute(char shortName, string helpText = "")
+        {
+            ShortName = "-" + shortName;
+            LongName = null;
+            HelpText = helpText;
+        }
+
+        public FlagArgumentAttribute(char shortName, string longName, string helpText = "")
+        {
+            if (Array.IndexOf(Reserved.Names, longName) != -1)
+            {
+                throw new InvalidNameException($"Arguments cannot use reserved names [{string.Join(',', Reserved.Names)}]");
+            }
+            ShortName = "-" + shortName;
+            LongName = "--" + longName;
+            HelpText = helpText;
+        }
+
+        public override (string, string, string) Usage()
+        {
+            if (ShortName == null)
+            {
+                return ($"{LongName}", "", HelpText);
+            }
+            else if (LongName == null)
+            {
+                return ($"{ShortName}", "", HelpText);
+            }
+            else
+            {
+                return ($"{ShortName}|{LongName}", "", HelpText);
+            }
+        }
     }
 
     // Creates a named argument eg `app.exe --outfile /tmp/out.txt`

@@ -79,7 +79,7 @@ namespace ArgSharp.Tests
         }
 
         [TestMethod]
-        public void TestFlag()
+        public void TestFlagLong()
         {
             string[] flagArgs = new string[] { "--True1", "--True2" };
             var f = new ArgSharp.Parser().ParseIntoNew<FlagBooleans>(flagArgs);
@@ -87,6 +87,28 @@ namespace ArgSharp.Tests
             Assert.AreEqual(true, f.True1Prop);
             Assert.AreEqual(true, f.True2Prop);
             Assert.AreEqual(false, f.False2Prop);
+            Assert.AreEqual(false, f.TrueCharProp);
+        }
+
+        [TestMethod]
+        public void TestFlagShort()
+        {
+            string[] flagArgs = new string[] { "-t" };
+            var f = new ArgSharp.Parser().ParseIntoNew<FlagBooleans>(flagArgs);
+            Assert.AreEqual(false, f.False1Prop);
+            Assert.AreEqual(true, f.TrueCharProp);
+            Assert.AreEqual(false, f.FalseCharProp);
+        }
+
+        [TestMethod]
+        public void TestFlagMix()
+        {
+            string[] flagArgs = new string[] { "-t", "--True2" };
+            var f = new ArgSharp.Parser().ParseIntoNew<FlagBooleans>(flagArgs);
+            Assert.AreEqual(false, f.False1Prop);
+            Assert.AreEqual(true, f.True2Prop);
+            Assert.AreEqual(false, f.False2Prop);
+            Assert.AreEqual(true, f.TrueCharProp);
         }
 
         [TestMethod]

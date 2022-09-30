@@ -1,12 +1,12 @@
 Remove-Item .\TestResults -Recurse -ErrorAction Ignore
 Write-Host "Running tests..."
 
-dotnet test --collect:"Code Coverage" --settings:settings.runsettings
+dotnet test -l "console;verbosity=detailed" --collect:"Code Coverage" --settings:settings.runsettings
 
 $TestResultFolder=(Get-ChildItem .\TestResults)[0].Name
 $TestResultFile=(Get-ChildItem .\TestResults\$TestResultFolder)[0].Name
 
-CodeCoverage analyze /output:TestResults\results.xml TestResults\$TestResultFolder\$TestResultFile
+dotnet-coverage merge *.coverage -r -o TestResults\results.xml -f xml 
 
 dotnet reportgenerator "-reports:TestResults\results.xml" "-targetdir:TestResults\target"
 

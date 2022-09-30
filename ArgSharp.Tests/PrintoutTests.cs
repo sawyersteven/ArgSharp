@@ -39,7 +39,7 @@ namespace ArgSharp.Tests
 
             outList.Lines.Clear();
             new ArgSharp.Parser() { ExitAfterPrint = false }.ParseIntoNew<HelpMessages>(new string[] { "--version" });
-            Assert.AreEqual("testhost (1.2.1)", outList.Lines[0]);
+            Assert.AreEqual("testhost (1.3.0)", outList.Lines[0]);
         }
 
         [TestMethod]
